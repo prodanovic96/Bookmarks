@@ -1,0 +1,17 @@
+<p *ngIf="!dummyData"><em>Loading from Bookmarks.API...</em></p>
+<div *ngIf="dummyData">
+    We are building application similar to <a href="https://www.theurlist.com/" target="_blank">TheUrlList</a>
+    <br />
+    <br />
+    You should replace this content with proper Angular components to support TheUrlList functionality.<br />
+    Check their <a href="https://www.theurlist.com/s/edit" target="_blank">edit</a> page used for adding new URLs. Our edit page shoud look similar.
+    <br />
+    <br />
+    This data below is just a dummy data returned from Bookmarks.Api
+    <ul>
+        <li>Name: {{ dummyData.name }}</li>
+        <li>Surname: {{ dummyData.surname }}</li>
+        <li>Age: {{ dummyData.age }}</li>
+    </ul>
+    
+</div>

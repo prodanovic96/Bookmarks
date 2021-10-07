@@ -11,7 +11,7 @@ namespace Bookmarks.Api.Controllers
         public async Task<IActionResult> GetSomeDummyData()
         {
             return await Task.Run(() =>
-            {
+            {   
                 var result = new
                 {
                     Name = "John",

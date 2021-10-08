@@ -19,7 +19,7 @@ namespace Bookmarks.Api.Controllers
         private readonly ILogger<UrlController> _logger;
         private readonly IDataBaseRepository _dataBase;
         private IStringHelper _helper;
-        private const int length = 7;
+        private const int titleLength = 7;
 
         public UrlController(ILogger<UrlController> logger, IDataBaseRepository dataBase, IStringHelper helper)
         {
@@ -54,11 +54,11 @@ namespace Bookmarks.Api.Controllers
 
             if (url.Title == string.Empty)
             {
-                url.Title = _helper.RandomString(length);
+                url.Title = _helper.RandomString(titleLength);
 
                 while(_dataBase.Contain(url.Title)) 
                 {
-                    url.Title = _helper.RandomString(length);
+                    url.Title = _helper.RandomString(titleLength);
                 } 
             }
 
@@ -85,8 +85,8 @@ namespace Bookmarks.Api.Controllers
             }
             else
             {
-                _logger.LogInformation("URL link is not valide");
-                return BadRequest("URL link is not valide!!!");
+                _logger.LogInformation("URL link is not valid");
+                return BadRequest("URL link is not valid!!!");
             }    
         }
     }

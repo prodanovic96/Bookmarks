@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Builder;
+﻿using Bookmarks.Api.Helper;
+using Bookmarks.Api.Repository;
+using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
@@ -37,7 +39,7 @@ namespace Bookmarks.Api
 
             services.AddControllers();
 
-            services.AddSingleton<IDateBaseRepository, DataBaseRepository>();
+            services.AddSingleton<IDataBaseRepository, DataBaseRepository>();
             services.AddSingleton<IStringHelper, StringHelper>();
         }
 

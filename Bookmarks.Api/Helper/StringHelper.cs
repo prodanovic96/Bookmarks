@@ -14,14 +14,5 @@ namespace Bookmarks.Api.Helper
             return new string(Enumerable.Repeat(chars, length)
               .Select(s => s[random.Next(s.Length)]).ToArray());
         }
-
-        public bool UrlValidation(string url)
-        {
-            Uri uriResult;
-            bool result = Uri.TryCreate(url, UriKind.Absolute, out uriResult)
-            && uriResult.Scheme == Uri.UriSchemeHttp;
-
-            return result;
-        }
     }
 }

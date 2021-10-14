@@ -61,7 +61,6 @@ namespace Bookmarks.Tests
 
         [Fact]
         public void PostUrlList_UnexistingItem_ReturnsOk()
-
         {
             string title = "test";
             string description = "";
@@ -105,7 +104,5 @@ namespace Bookmarks.Tests
             // Assert
             Assert.IsType<BadRequestObjectResult>(result);
         }
-
-
     }
 }

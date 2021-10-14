@@ -33,7 +33,6 @@ namespace Bookmarks.Tests
             var result = _controller.GetUrlList("test");
 
             // Assert
-
             Assert.IsType<NotFoundResult>(result);
         }
 

@@ -1,8 +1,10 @@
 ﻿using Bookmarks.Api.Models;
 using System;
 using System.Collections.Generic;
+using System.Data;
 using System.Linq;
 using System.Threading.Tasks;
+using System.Configuration;
 
 namespace Bookmarks.Api.Repository
 {
@@ -14,7 +16,7 @@ namespace Bookmarks.Api.Repository
         {
             if (collection == null)
             {
-                collection = new Dictionary<string, UrlList>();
+                collection = new Dictionary<string, UrlList>(); // nema potrebe za proverom da li je null jer ce zbog Singleton-a uci ovde samo jednom
             }
         }
 
@@ -40,6 +42,6 @@ namespace Bookmarks.Api.Repository
         public bool Contain(string s)
         {
             return collection.ContainsKey(s);
-        }
+        } 
     }
 }

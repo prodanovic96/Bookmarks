@@ -27,9 +27,9 @@ namespace Bookmarks.Api.Controllers
         public IActionResult GetUrlList([FromQuery]string name)
         {
             name = name.ToLower();
-            if (_dataBaseServices.GetFromDataBase(name) != null)
+            if (_dataBaseServices.ExistingInDataBase(name))
             {
-                return Ok(_dataBaseServices.ExistingInDataBase(name));
+                return Ok(_dataBaseServices.GetFromDataBase(name));
             }
             return NotFound("URL List with name: " + name + "  don't exist!!!");
         }

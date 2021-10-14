@@ -27,7 +27,7 @@ namespace Bookmarks.Api.Controllers
         public IActionResult GetUrlList([FromQuery]string name)
         {
             name = name.ToLower();
-            if (_dataBaseServices.ExistingInDataBase(name))
+            if (_dataBaseServices.GetFromDataBase(name) != null)
             {
                 return Ok(_dataBaseServices.GetFromDataBase(name));
             }

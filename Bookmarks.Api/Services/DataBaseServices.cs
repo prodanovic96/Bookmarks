@@ -75,14 +75,5 @@ namespace Bookmarks.Api.Services
             return false;
         }
 
-        public bool ExistingInDataBase(string name)
-        {
-            name = name.ToLower();
-            if (GetFromDataBase(name) != null)
-            {
-                return true;
-            }
-            return false;
-        }
     }
 }

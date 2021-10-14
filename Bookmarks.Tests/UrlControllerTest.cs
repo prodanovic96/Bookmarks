@@ -79,7 +79,7 @@ namespace Bookmarks.Tests
             var result = _controller.PostUrlList(unexistingItem);
 
             // Assert
-            Assert.IsType<OkResult>(result);
+            Assert.IsType<StatusCodeResult>(result);
         }
 
         [Fact]

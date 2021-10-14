@@ -9,85 +9,46 @@ using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Bookmarks.Api.Helper;
 using Bookmarks.Api.Repository;
+using Bookmarks.Api.Services;
 
 namespace Bookmarks.Api.Controllers
 {
     [ApiController]
     [Route("[controller]")]
     public class UrlController : ControllerBase
-    { 
-        private readonly ILogger<UrlController> _logger;
-        private readonly IDataBaseRepository _dataBase;
-        private IStringHelper _helper;
-        private const int titleLength = 7;
+    {
+        private readonly IService _service;
 
-        public UrlController(ILogger<UrlController> logger, IDataBaseRepository dataBase, IStringHelper helper)
+        public UrlController(IService service)
         {
-            _logger = logger;
-            _dataBase = dataBase;
-            _helper = helper;
+            _service = service;
         }
 
         
         [HttpGet]       //[HttpGet("getdata")]
         public IActionResult GetUrlList([FromQuery]string name)
         {
-            name = name.ToLower();
-
-            if (_dataBase.Contain(name))
+            UrlList list = _service.Get(name);
+            
+            if (list != null)
             {
-                _logger.LogInformation("GetUrlList method successfully called");
-                return Ok(_dataBase.GetFromDataBase(name));       
+                return Ok(list);
             }
-            else
-            {
-                _logger.LogInformation("GetUrlList method unsuccessfully called");
-                return BadRequest();              
-            }      
+
+            return NotFound();
         }
 
         [HttpPost]
         public IActionResult PostUrlList([FromBody]UrlList url)
-        {
-            string name = url.Title.ToLower();
-            bool valideLink = true;
-
-            if (url.Title == string.Empty)
-            {
-                url.Title = _helper.RandomString(titleLength);
-
-                while(_dataBase.Contain(url.Title)) 
-                {
-                    url.Title = _helper.RandomString(titleLength);
-                } 
-            }
-
-            for(int i = 0; i < url.List.Count; i++)
-            {
-                if (!_helper.UrlValidation(url.List[i].Link))
-                {
-                    valideLink = false;
-                }
-            }
-
-            if (valideLink)
-            {
-                if (_dataBase.AddToDataBase(name, url))
-                {
-                    _logger.LogInformation("PostUrlList method successfully called");
-                    return Ok();
-                }
-                else
-                {
-                    _logger.LogInformation("PostUrlList method unsuccessfully called");
-                    return BadRequest("URL List with name:   " + name + "  already exist!!!");
-                }
+        {           
+            if (_service.Add(url))
+            { 
+                return StatusCode(201);
             }
             else
-            {
-                _logger.LogInformation("URL link is not valid");
-                return BadRequest("URL link is not valid!!!");
-            }    
+            {    
+                return BadRequest("URL List with name:   " + url.Title + "  already exist!!!");
+            } 
         }
     }
 }

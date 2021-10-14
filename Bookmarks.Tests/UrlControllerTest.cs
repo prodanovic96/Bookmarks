@@ -2,6 +2,7 @@
 using Bookmarks.Api.Helper;
 using Bookmarks.Api.Models;
 using Bookmarks.Api.Repository;
+using Bookmarks.Api.Services;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using Moq;
@@ -14,27 +15,26 @@ namespace Bookmarks.Tests
     public class UrlControllerTest
     {
         private readonly UrlController _controller;
-        private readonly Mock<ILogger<UrlController>> loggerMock = new Mock<ILogger<UrlController>>();
-        private readonly Mock<IStringHelper> stringHelperMock = new Mock<IStringHelper>();
-        private readonly Mock<IDataBaseRepository> dataBaseMock = new Mock<IDataBaseRepository>();
+        private readonly Mock<IService> serviceMock = new Mock<IService>();
 
         public UrlControllerTest()
         {
-            _controller = new UrlController(loggerMock.Object, dataBaseMock.Object, stringHelperMock.Object);
+            _controller = new UrlController(serviceMock.Object);
         }
 
         [Fact]
-        public void GetUrlList_WithUnexistingItem_ReturnsBadRequst()
+        public void GetUrlList_WithUnexistingItem_ReturnsNotFoundResult()
         {
             // Arrange        
-            dataBaseMock.Setup(repo => repo.GetFromDataBase(It.IsAny<string>()))
+            serviceMock.Setup(serv => serv.Get(It.IsAny<string>()))
                 .Returns((UrlList)null);
             
             // Act
             var result = _controller.GetUrlList("test");
 
             // Assert
-            Assert.IsType<BadRequestResult>(result);
+
+            Assert.IsType<NotFoundResult>(result);
         }
 
         [Fact]
@@ -50,10 +50,9 @@ namespace Bookmarks.Tests
             };
 
             // Arrange
-            dataBaseMock.Setup(repo => repo.GetFromDataBase(expectedItem.Title))
+
+            serviceMock.Setup(serv => serv.Get(expectedItem.Title))
                 .Returns(expectedItem);
-            dataBaseMock.Setup(repo => repo.Contain(expectedItem.Title))
-               .Returns(true);
 
             // Act
             var result = _controller.GetUrlList(expectedItem.Title);
@@ -63,7 +62,8 @@ namespace Bookmarks.Tests
         }
 
         [Fact]
-        public void PostUrlList_ValidLinkWithUnexistingItem_ReturnsOk()
+        public void PostUrlList_UnexistingItem_ReturnsOk()
+
         {
             string title = "test";
             string description = "";
@@ -73,21 +73,21 @@ namespace Bookmarks.Tests
                 List = new List<UrlItem>(),
                 Description = description,
             };
+
             // Arrange
-            dataBaseMock.Setup(repo => repo.AddToDataBase(unexistingItem.Title, unexistingItem))
+            serviceMock.Setup(serv => serv.Add(unexistingItem))
                 .Returns(true);
-            dataBaseMock.Setup(repo => repo.Contain(unexistingItem.Title))
-                .Returns(false);
 
             // Act
             var result = _controller.PostUrlList(unexistingItem);
 
             // Assert
-            Assert.IsType<OkResult>(result);
+
+            Assert.IsType<StatusCodeResult>(result);
         }
 
         [Fact]
-        public void PostUrlList_ValidLinkWithExistingItem_ReturnsBadRequest()
+        public void PostUrlList_WithExistingItem_ReturnsBadRequest()
         {
             string title = "test";
             string description = "";
@@ -98,10 +98,10 @@ namespace Bookmarks.Tests
                 Description = description,
             };
             // Arrange
-            dataBaseMock.Setup(repo => repo.AddToDataBase(existingItem.Title, existingItem))
+
+            serviceMock.Setup(serv => serv.Add(existingItem))
                 .Returns(false);
-            dataBaseMock.Setup(repo => repo.Contain(existingItem.Title))
-                .Returns(true);
+
             // Act
             var result = _controller.PostUrlList(existingItem);
 
@@ -109,29 +109,6 @@ namespace Bookmarks.Tests
             Assert.IsType<BadRequestObjectResult>(result);
         }
 
-        [Fact]
-        public void PostUrlList_InvalidLink_ReturnsBadRequest()
-        {
-            string title = "test";
-            string description = "";
-            var invalidLink = new UrlList()
-            {
-                Title = title,
-                List = new List<UrlItem>(),
-                Description = description,
-            };
-            UrlItem item = new UrlItem { Name = "test", Description = "", Link = "test" };
-            invalidLink.List.Add(item);
 
-            // Arrange
-            stringHelperMock.Setup(repo => repo.UrlValidation(item.Link))
-                .Returns(false);
- 
-            // Act
-            var result = _controller.PostUrlList(invalidLink);
-
-            // Assert
-            Assert.IsType<BadRequestObjectResult>(result);
-        }
     }
 }

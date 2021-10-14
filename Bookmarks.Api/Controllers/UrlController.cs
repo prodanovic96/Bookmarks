@@ -17,38 +17,35 @@ namespace Bookmarks.Api.Controllers
     [Route("[controller]")]
     public class UrlController : ControllerBase
     {
-        private readonly IService _service;
 
-        public UrlController(IService service)
+        private readonly IDataBaseServices _dataBaseServices;
+        public UrlController(IDataBaseServices dataBaseServices)
         {
-            _service = service;
+            _dataBaseServices = dataBaseServices;
         }
-
-        
-        [HttpGet]       //[HttpGet("getdata")]
+ 
+        [HttpGet]
         public IActionResult GetUrlList([FromQuery]string name)
         {
-            UrlList list = _service.Get(name);
-            
-            if (list != null)
+            name = name.ToLower();
+            if (_dataBaseServices.GetFromDataBase(name) != null)
             {
-                return Ok(list);
+                return Ok(_dataBaseServices.GetFromDataBase(name));
             }
-
-            return NotFound();
+            return NotFound("URL List with name: " + name + "  don't exist!!!");
         }
 
         [HttpPost]
         public IActionResult PostUrlList([FromBody]UrlList url)
-        {           
-            if (_service.Add(url))
+        {
+            if (_dataBaseServices.PostToDataBase(url))
             { 
                 return StatusCode(201);
             }
             else
-            {    
-                return BadRequest("URL List with name:   " + url.Title + "  already exist!!!");
-            } 
+            {
+                return BadRequest("URL List with name: " + url.Title + "  already exist!!!");
+            }
         }
     }
 }

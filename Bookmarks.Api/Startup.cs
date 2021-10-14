@@ -1,8 +1,10 @@
 ﻿using Bookmarks.Api.Helper;
+using Bookmarks.Api.Models;
 using Bookmarks.Api.Repository;
 using Bookmarks.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
+using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
@@ -38,11 +40,13 @@ namespace Bookmarks.Api
                         .AllowAnyHeader());
             });
 
-            services.AddControllers();
+            services.AddDbContext<DataBase>(options => options.UseSqlite("Data Source=bookmarks.db"));
+            services.AddDatabaseDeveloperPageExceptionFilter();
 
-            services.AddSingleton<IDataBaseRepository, DataBaseRepository>();
+            services.AddControllers();
+ 
             services.AddSingleton<IStringHelper, StringHelper>();
-            services.AddSingleton<IService, Service>();
+            services.AddScoped<IDataBaseServices, DataBaseServices>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

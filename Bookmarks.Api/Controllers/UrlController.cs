@@ -17,11 +17,9 @@ namespace Bookmarks.Api.Controllers
     [Route("[controller]")]
     public class UrlController : ControllerBase
     {
-        private readonly IDictionaryServices _dictionaryService;
         private readonly IDataBaseServices _dataBaseServices;
-        public UrlController(IDictionaryServices dictionaryService, IDataBaseServices dataBaseServices)
+        public UrlController(IDataBaseServices dataBaseServices)
         {
-            _dictionaryService = dictionaryService;
             _dataBaseServices = dataBaseServices;
         }
  
@@ -29,21 +27,19 @@ namespace Bookmarks.Api.Controllers
         public IActionResult GetUrlList([FromQuery]string name)
         {
             name = name.ToLower();
-            if (_dataBaseServices.GetFromDataBase(name))
+            if (_dataBaseServices.GetFromDataBase(name) != null)
             {
-                _dictionaryService.GetFromDictionary(name);
                 return Ok(_dataBaseServices.ExistingInDataBase(name));
             }
-            return BadRequest("URL List with name: " + name + "  don't exist!!!");
+            return NotFound("URL List with name: " + name + "  don't exist!!!");
         }
 
         [HttpPost]
         public IActionResult PostUrlList([FromBody]UrlList url)
         {
             if (_dataBaseServices.PostToDataBase(url))
-            {
-                _dictionaryService.PostToDictionary(url);
-                return Ok();
+            { 
+                return StatusCode(201);
             }
             else
             {

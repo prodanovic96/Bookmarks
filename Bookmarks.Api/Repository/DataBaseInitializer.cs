@@ -7,7 +7,6 @@ namespace Bookmarks.Api.Repository
 {
     public class DataBaseInitializer
     {
-
         public static void Initialize(DataBase context)
         {
             context.Database.EnsureCreated();

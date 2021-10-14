@@ -25,16 +25,20 @@ namespace Bookmarks.Api.Services
             _helper = helper;
         }
 
-        public bool GetFromDataBase(string name)
+        public UrlList GetFromDataBase(string name)
         {
-            if (ExistingInDataBase(name) != null)
+            name = name.ToLower();
+            UrlList list = _dataBase.UrlLists.FirstOrDefault(m => m.Title == name);
+            list.Items = _dataBase.UrlItems.Include(m => m.UrlListId).Where(m => m.UrlListId == list.Id).ToList();
+
+            if (ExistingInDataBase(name))
             {
                 _logger.LogInformation("GetFromDictionary method successfully called");
-                return true;               
+                return list;
             }
 
             _logger.LogInformation("GetFromDictionary method unsuccessfully called");
-            return false;
+            return null;
         }
 
         public bool PostToDataBase(UrlList url)
@@ -69,12 +73,14 @@ namespace Bookmarks.Api.Services
             return false;
         }
 
-        public UrlList ExistingInDataBase(string name)
+        public bool ExistingInDataBase(string name)
         {
-            UrlList list = _dataBase.UrlLists.FirstOrDefault(m => m.Title == name);
-            list.Items = _dataBase.UrlItems.Include(m => m.UrlListId).Where(m => m.UrlListId == list.Id).ToList();
-            
-            return list;
+            name = name.ToLower();
+            if (GetFromDataBase(name) != null)
+            {
+                return true;
+            }
+            return false;
         }
     }
 }

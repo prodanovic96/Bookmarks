@@ -44,10 +44,8 @@ namespace Bookmarks.Api
             services.AddDatabaseDeveloperPageExceptionFilter();
 
             services.AddControllers();
-
-            services.AddSingleton<IDataBaseRepository, DataBaseRepository>();
+ 
             services.AddSingleton<IStringHelper, StringHelper>();
-            services.AddSingleton<IDictionaryServices, DictionaryServices>();
             services.AddScoped<IDataBaseServices, DataBaseServices>();
         }
 

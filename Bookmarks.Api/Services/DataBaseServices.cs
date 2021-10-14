@@ -31,14 +31,16 @@ namespace Bookmarks.Api.Services
             UrlList list = _dataBase.UrlLists.FirstOrDefault(m => m.Title == name);
             list.Items = _dataBase.UrlItems.Include(m => m.UrlListId).Where(m => m.UrlListId == list.Id).ToList();
 
-            if (ExistingInDataBase(name))
+            if (list != null)
             {
                 _logger.LogInformation("GetFromDictionary method successfully called");
-                return list;
-            }
 
-            _logger.LogInformation("GetFromDictionary method unsuccessfully called");
-            return null;
+            }
+            else
+            {
+                _logger.LogInformation("GetFromDictionary method unsuccessfully called");
+            }
+            return list;
         }
 
         public bool PostToDataBase(UrlList url)

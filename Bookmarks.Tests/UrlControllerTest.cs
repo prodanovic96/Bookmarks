@@ -33,6 +33,7 @@ namespace Bookmarks.Tests
             var result = _controller.GetUrlList("test");
 
             // Assert
+
             Assert.IsType<NotFoundResult>(result);
         }
 
@@ -49,6 +50,7 @@ namespace Bookmarks.Tests
             };
 
             // Arrange
+
             serviceMock.Setup(serv => serv.Get(expectedItem.Title))
                 .Returns(expectedItem);
 
@@ -61,6 +63,7 @@ namespace Bookmarks.Tests
 
         [Fact]
         public void PostUrlList_UnexistingItem_ReturnsOk()
+
         {
             string title = "test";
             string description = "";
@@ -79,6 +82,7 @@ namespace Bookmarks.Tests
             var result = _controller.PostUrlList(unexistingItem);
 
             // Assert
+
             Assert.IsType<StatusCodeResult>(result);
         }
 
@@ -94,6 +98,7 @@ namespace Bookmarks.Tests
                 Description = description,
             };
             // Arrange
+
             serviceMock.Setup(serv => serv.Add(existingItem))
                 .Returns(false);
 
@@ -103,6 +108,7 @@ namespace Bookmarks.Tests
             // Assert
             Assert.IsType<BadRequestObjectResult>(result);
         }
+
 
     }
 }

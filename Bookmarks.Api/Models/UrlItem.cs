@@ -13,7 +13,7 @@ namespace Bookmarks.Api.Models
         public string Description { get; set; }
         public string Link { get; set; }
         public int Id { get; set; }
-        [ForeignKey("Standard")]
+        [ForeignKey("UrlList")]
         public int UrlListId { get; set; }
     }
 }

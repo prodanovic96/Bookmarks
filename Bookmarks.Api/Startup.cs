@@ -1,5 +1,6 @@
 ﻿using Bookmarks.Api.Helper;
 using Bookmarks.Api.Repository;
+using Bookmarks.Api.Services;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
 using Microsoft.Extensions.Configuration;
@@ -41,6 +42,7 @@ namespace Bookmarks.Api
 
             services.AddSingleton<IDataBaseRepository, DataBaseRepository>();
             services.AddSingleton<IStringHelper, StringHelper>();
+            services.AddSingleton<IService, Service>();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

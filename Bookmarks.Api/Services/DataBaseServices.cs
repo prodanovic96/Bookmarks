@@ -1,13 +1,10 @@
 ﻿using Bookmarks.Api.Models;
 using Bookmarks.Api.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Bookmarks.Api.Controllers;
 using Bookmarks.Api.Helper;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Bookmarks.Api.Services
 {
@@ -28,7 +25,7 @@ namespace Bookmarks.Api.Services
         public UrlList Get(string name)
         {
             name = name.ToLower();
-
+            
             UrlList list = _urlRepository.Get(name);
 
             if (list != null)
@@ -38,8 +35,7 @@ namespace Bookmarks.Api.Services
             else
             {
                 _logger.LogInformation("GetFromDictionary method unsuccessfully called");
-            }
-
+            }     
             return list;
         }
 

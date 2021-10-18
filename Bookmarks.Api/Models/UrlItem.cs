@@ -15,7 +15,7 @@ namespace Bookmarks.Api.Models
          ErrorMessage = "Only accept http and https links.")]
         public string Link { get; set; }
         public int Id { get; set; }
-        [ForeignKey("UrlList")]
+        //[ForeignKey("UrlList")]
         public int UrlListId { get; set; }
     }
 }

@@ -10,14 +10,14 @@ namespace Bookmarks.Api.Services
 {
     public class DataBaseServices : IDataBaseServices
     {
-        private readonly DataBase _dataBase;
+        private readonly IUrlRepository _urlRepository;
         private readonly ILogger<UrlController> _logger;
         private IStringHelper _helper;
         private const int titleLength = 7;
 
-        public DataBaseServices(DataBase dataBase, ILogger<UrlController> logger, IStringHelper helper)
+        public DataBaseServices(IUrlRepository urlRepository, ILogger<UrlController> logger, IStringHelper helper)
         {
-            _dataBase = dataBase;
+            _urlRepository = urlRepository;
             _logger = logger;
             _helper = helper;
         }
@@ -25,20 +25,18 @@ namespace Bookmarks.Api.Services
         public UrlList Get(string name)
         {
             name = name.ToLower();
-            var result = _dataBase.UrlLists
-                .Include(list => list.Items)
-                .Where(list => list.Title == name)
-                .FirstOrDefault();
             
-            if (result != null)
+            UrlList list = _urlRepository.Get(name);
+
+            if (list != null)
             {
                 _logger.LogInformation("GetFromDictionary method successfully called");
             }
             else
             {
                 _logger.LogInformation("GetFromDictionary method unsuccessfully called");
-            }
-            return result;
+            }     
+            return list;
         }
 
         public bool Add(UrlList url)
@@ -49,18 +47,17 @@ namespace Bookmarks.Api.Services
             {
                 url.Title = _helper.RandomString(titleLength);
 
-                while (_dataBase.UrlLists.FirstOrDefault(m => m.Title == url.Title) != null)  
+                while (Get(url.Title) != null)
                 {
                     url.Title = _helper.RandomString(titleLength);
                 }
+
                 _logger.LogInformation("Empty field title set to random string!");
             }
 
-            if (_dataBase.UrlLists.FirstOrDefault(m => m.Title == url.Title) == null)
-            {               
-                _dataBase.UrlLists.Add(url);
-                _dataBase.SaveChanges();
-
+            if (Get(url.Title) == null)
+            {
+                _urlRepository.Add(url);
                 _logger.LogInformation("PostToDataBase method successfully called");
                 return true;
             }

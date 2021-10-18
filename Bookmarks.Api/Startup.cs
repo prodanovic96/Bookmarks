@@ -46,6 +46,7 @@ namespace Bookmarks.Api
             services.AddControllers();
  
             services.AddSingleton<IStringHelper, StringHelper>();
+            services.AddScoped<IUrlRepository, UrlRepository>();
             services.AddScoped<IDataBaseServices, DataBaseServices>();
         }
 

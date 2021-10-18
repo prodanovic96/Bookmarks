@@ -28,10 +28,10 @@ namespace Bookmarks.Api.Controllers
         public IActionResult GetUrlList([FromQuery]string name)
         {
             name = name.ToLower();
-            var result = _dataBaseServices.Get(name);
-            if (result != null)
+
+            if (_dataBaseServices.Get(name) != null)
             {
-                return Ok(result);
+                return Ok(_dataBaseServices.Get(name));
             }
             return NotFound("URL List with name: " + name + "  don't exist!!!");
         }

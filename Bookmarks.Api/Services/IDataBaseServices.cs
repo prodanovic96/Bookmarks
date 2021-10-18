@@ -8,7 +8,7 @@ namespace Bookmarks.Api.Services
 {
     public interface IDataBaseServices
     {
-        public bool PostToDataBase(UrlList url);
-        public UrlList GetFromDataBase(string name);
+        public bool Add(UrlList url);
+        public UrlList Get(string name);
     }
 }

@@ -28,9 +28,10 @@ namespace Bookmarks.Api.Controllers
         public IActionResult GetUrlList([FromQuery]string name)
         {
             name = name.ToLower();
-            if (_dataBaseServices.GetFromDataBase(name) != null)
+            var result = _dataBaseServices.Get(name);
+            if (result != null)
             {
-                return Ok(_dataBaseServices.GetFromDataBase(name));
+                return Ok(result);
             }
             return NotFound("URL List with name: " + name + "  don't exist!!!");
         }
@@ -38,7 +39,7 @@ namespace Bookmarks.Api.Controllers
         [HttpPost]
         public IActionResult PostUrlList([FromBody]UrlList url)
         {
-            if (_dataBaseServices.PostToDataBase(url))
+            if (_dataBaseServices.Add(url))
             { 
                 return StatusCode(201);
             }

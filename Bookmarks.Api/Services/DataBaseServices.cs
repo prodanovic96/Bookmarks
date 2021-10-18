@@ -1,13 +1,10 @@
 ﻿using Bookmarks.Api.Models;
 using Bookmarks.Api.Repository;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using Microsoft.Extensions.Logging;
 using Bookmarks.Api.Controllers;
 using Bookmarks.Api.Helper;
-using System.Data.Entity;
+using Microsoft.EntityFrameworkCore;
+using System.Linq;
 
 namespace Bookmarks.Api.Services
 {
@@ -25,25 +22,26 @@ namespace Bookmarks.Api.Services
             _helper = helper;
         }
 
-        public UrlList GetFromDataBase(string name)
+        public UrlList Get(string name)
         {
             name = name.ToLower();
-            UrlList list = _dataBase.UrlLists.FirstOrDefault(m => m.Title == name);
-            list.Items = _dataBase.UrlItems.Include(m => m.UrlListId).Where(m => m.UrlListId == list.Id).ToList();
-
-            if (list != null)
+            var result = _dataBase.UrlLists
+                .Include(list => list.Items)
+                .Where(list => list.Title == name)
+                .FirstOrDefault();
+            
+            if (result != null)
             {
                 _logger.LogInformation("GetFromDictionary method successfully called");
-
             }
             else
             {
                 _logger.LogInformation("GetFromDictionary method unsuccessfully called");
             }
-            return list;
+            return result;
         }
 
-        public bool PostToDataBase(UrlList url)
+        public bool Add(UrlList url)
         {
             url.Title = url.Title.ToLower();
 
@@ -59,11 +57,7 @@ namespace Bookmarks.Api.Services
             }
 
             if (_dataBase.UrlLists.FirstOrDefault(m => m.Title == url.Title) == null)
-            {
-                foreach (var v in url.Items)
-                {
-                    _dataBase.UrlItems.Add(v);
-                }
+            {               
                 _dataBase.UrlLists.Add(url);
                 _dataBase.SaveChanges();
 

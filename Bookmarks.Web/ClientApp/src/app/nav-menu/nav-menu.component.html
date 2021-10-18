@@ -19,13 +19,17 @@
         class="navbar-collapse collapse d-sm-inline-flex justify-content-end"
         [ngClass]="{ show: isExpanded }"
       >
+      
           <ul class="navbar-nav flex-grow">
               <li class="nav-item"
                   [routerLinkActive]="['link-active']"
                   [routerLinkActiveOptions]="{ exact: true }">
                   <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
               </li>
-              <li class="nav-item" [routerLinkActive]="['link-active']">
+              <li class="nav-item" [routerLinkActive]="['assignment']">
+                <a class="nav-link text-dark" [routerLink]="['/new-url-list']">Add New List</a>
+              </li>
+              <!--<li class="nav-item" [routerLinkActive]="['link-active']">
                   <a class="nav-link text-dark" [routerLink]="['/counter']">Counter</a>
               </li>
               <li class="nav-item" [routerLinkActive]="['link-active']">
@@ -36,8 +40,8 @@
               </li>
               <li class="nav-item" [routerLinkActive]="['assignment']">
                   <a class="nav-link text-dark" [routerLink]="['/assignment']">Assignments</a>
-              </li>
-          </ul>
+              </li>-->
+          </ul> 
       </div>
     </div>
   </nav>

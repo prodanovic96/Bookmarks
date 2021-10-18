@@ -1,0 +1,31 @@
+<form>
+    <div>
+        <div>
+            <label for="title">Link Title</label>
+            <input type="text" [(ngModel)]="list.title"  id="title" [(ngModel)]="list.title" placeholder="">
+        </div>
+        <div>
+            <label for="description">Description</label>
+            <input type="text" [(ngModel)]="list.description" id="description" [(ngModel)]="list.description" placeholder="">  
+        </div>     
+        <div>
+            <button class="btn btn-primary" (click)="publish()">Publish</button>
+        </div>
+    </div>    
+    <br><br>
+    <div>
+        <p>Enter a link and press enter</p>
+        <input type="text" [(ngModel)]="item.link" (keyup.enter)="addItem()" id="link" placeholder="http://example.com"> 
+    </div>
+    <div>
+        <ul class="urls">
+            <li>
+              <span class="badge">{{list.title}}</span>
+            </li>
+          </ul>
+    </div>
+</form>
+<!--
+<div>
+    {{list.title}} {{list.description}}
+</div>      -->

@@ -28,7 +28,7 @@ namespace Bookmarks.Api.Helper
 
             return result;
         }
-
+        
         public bool Existing(string listName)
         {
             bool result = _dbcontext.UrlLists

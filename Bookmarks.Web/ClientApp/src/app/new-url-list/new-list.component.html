@@ -1,0 +1,30 @@
+<div>
+    <div class="form-row">
+        <div class="col-md-4 mb-3">
+            <label for="title">List Title</label>
+            <input type="text" class="form-control" [(ngModel)]="newList.title" (keyup)='changed($event)' id="title" placeholder="">
+            <div *ngIf="err === 404" class="alert alert-danger">List with same title already exist</div>
+        </div>
+        <div class="col-md-4 mb-3">
+            <label for="description">Description</label>
+            <input type="text" class="form-control" [(ngModel)]="newList.description" id="description" placeholder="">  
+        </div>  
+    </div>   
+    <div class="form-row">
+        <button class="btn btn-primary" style="height:50px;width:120px" id="my_btn" [(disabled)] = "isDisabled" (click)="publish()">Publish</button>  
+    </div>
+    <br><br>
+    <div *ngIf="err === 400" class="alert alert-danger">Publish unsuccessfully called</div>
+    <div>
+        <p>Enter a link and press enter</p>
+        <input type="text" [(ngModel)]="newItem.link" (keyup.enter)="addItem()" id="link" placeholder="http://example.com"> 
+    </div>
+    <p>Links</p>
+    <div *ngIf = "newList.items">
+        <ul *ngFor="let item of newList.items"> 
+            <li>{{ item.link}}</li>
+            <li>{{ item.name }}</li>
+            <li>{{ item.description }}</li>
+        </ul>
+    </div>  
+</div>

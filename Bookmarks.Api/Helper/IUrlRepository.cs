@@ -10,5 +10,6 @@ namespace Bookmarks.Api.Helper
     {
         void Add(UrlList url);
         UrlList Get(string listName);
+        bool Existing(string listName);
     }
 }

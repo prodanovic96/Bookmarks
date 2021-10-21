@@ -1,10 +1,7 @@
 ﻿using Bookmarks.Api.Models;
-using Bookmarks.Api.Repository;
 using Microsoft.Extensions.Logging;
 using Bookmarks.Api.Controllers;
 using Bookmarks.Api.Helper;
-using Microsoft.EntityFrameworkCore;
-using System.Linq;
 
 namespace Bookmarks.Api.Services
 {
@@ -41,13 +38,11 @@ namespace Bookmarks.Api.Services
 
         public bool Add(UrlList url)
         {
-            url.Title = url.Title.ToLower();
-
             if (url.Title == string.Empty)
             {
                 url.Title = _helper.RandomString(titleLength);
 
-                while (Get(url.Title) != null)
+                while (!Existing(url.Title))
                 {
                     url.Title = _helper.RandomString(titleLength);
                 }
@@ -55,7 +50,9 @@ namespace Bookmarks.Api.Services
                 _logger.LogInformation("Empty field title set to random string!");
             }
 
-            if (Get(url.Title) == null)
+            url.Title = url.Title.ToLower();
+
+            if (!Existing(url.Title))
             {
                 _urlRepository.Add(url);
                 _logger.LogInformation("PostToDataBase method successfully called");
@@ -65,6 +62,10 @@ namespace Bookmarks.Api.Services
             _logger.LogInformation("PostToDataBase method unsuccessfully called");
             return false;
         }
-
+    
+        public bool Existing(string name)
+        {
+            return _urlRepository.Existing(name);
+        }
     }
 }

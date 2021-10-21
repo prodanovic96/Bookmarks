@@ -11,6 +11,9 @@ import { CounterComponent } from './counter/counter.component';
 import { FetchDataComponent } from './fetch-data/fetch-data.component';
 import { BookmarksComponent } from './bookmarks/bookmarks.component';
 import { AssignmentComponent } from './assignment/assignment.component';
+import { NewUrlListComponent } from './new-url-list/new-list.component';
+import { ViewUrlListComponent } from './view-url-list/view-url-list.component';
+
 
 @NgModule({
   declarations: [
@@ -20,7 +23,9 @@ import { AssignmentComponent } from './assignment/assignment.component';
     CounterComponent,
     FetchDataComponent,
     BookmarksComponent,
-    AssignmentComponent
+    AssignmentComponent,
+    NewUrlListComponent,
+    ViewUrlListComponent
   ],
   imports: [
     BrowserModule.withServerTransition({ appId: 'ng-cli-universal' }),
@@ -28,10 +33,13 @@ import { AssignmentComponent } from './assignment/assignment.component';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'counter', component: CounterComponent },
+      { path: 'edit',component:NewUrlListComponent},
+      {path: '**',component:ViewUrlListComponent}
+      //{path: '**',component:CounterComponent}
+      /*{ path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'bookmarks', component: BookmarksComponent },
-      { path: 'assignment', component: AssignmentComponent },
+      { path: 'assignment', component: AssignmentComponent },*/
     ])
   ],
   providers: [],

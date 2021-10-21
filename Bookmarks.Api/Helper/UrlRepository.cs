@@ -1,11 +1,7 @@
 ﻿using Bookmarks.Api.Models;
 using Bookmarks.Api.Repository;
-using Bookmarks.Api.Services;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
-using System.Threading.Tasks;
 
 namespace Bookmarks.Api.Helper
 {
@@ -29,6 +25,15 @@ namespace Bookmarks.Api.Helper
                .Include(list => list.Items)
                .Where(list => list.Title == listName)
                .FirstOrDefault();
+
+            return result;
+        }
+        
+        public bool Existing(string listName)
+        {
+            bool result = _dbcontext.UrlLists
+               .Include(list => list.Items)
+               .Where(list => list.Title == listName).Count() > 0;
 
             return result;
         }

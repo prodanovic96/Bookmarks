@@ -33,6 +33,7 @@ namespace Bookmarks.Tests
             var result = _controller.GetUrlList("test");
 
             // Assert
+            dataBaseServicesMock.Verify(serv => serv.Get(It.IsAny<string>()),Times.Once);
             Assert.IsType<NotFoundObjectResult>(result);
         }
 
@@ -56,6 +57,7 @@ namespace Bookmarks.Tests
             var result = _controller.GetUrlList(expectedItem.Title);
 
             // Assert\
+            dataBaseServicesMock.Verify(serv => serv.Get(It.IsAny<string>()),Times.Exactly(2));
             Assert.IsType<OkObjectResult>(result);
         }
 
@@ -70,6 +72,7 @@ namespace Bookmarks.Tests
             var result = _controller.PostUrlList(new UrlList());
 
             // Assert
+            dataBaseServicesMock.Verify(serv => serv.Add(It.IsAny<UrlList>()));
             Assert.IsType<StatusCodeResult>(result);
         }
 
@@ -84,7 +87,46 @@ namespace Bookmarks.Tests
             var result = _controller.PostUrlList(new UrlList());
 
             // Assert
+            dataBaseServicesMock.Verify(serv => serv.Add(It.IsAny<UrlList>()));
             Assert.IsType<BadRequestObjectResult>(result);
+        }
+
+        [Fact]
+        public void Existing_WithUnexistingItem_ReturnsOk()
+        {
+            // Arrange
+            dataBaseServicesMock.Setup(serv => serv.Existing(It.IsAny<string>()))
+                .Returns(false);
+
+            // Act
+            var result = _controller.Existing("test");
+
+            // Assert\
+            dataBaseServicesMock.Verify(serv => serv.Existing(It.IsAny<string>()));
+            Assert.IsType<OkResult>(result);
+        }
+
+        [Fact]
+        public void Existing_WithExistingItem_ReturnsBadRequest()
+        {
+            string title = "test";
+            string description = "";
+            var existingItem = new UrlList()
+            {
+                Title = title,
+                Items = new List<UrlItem>(),
+                Description = description,
+            };
+            // Arrange
+            dataBaseServicesMock.Setup(serv => serv.Existing(existingItem.Title))
+                .Returns(true);
+
+            // Act
+            var result = _controller.Existing(existingItem.Title);
+
+            // Assert
+            dataBaseServicesMock.Verify(serv => serv.Existing(It.IsAny<string>()));
+            Assert.IsType<NotFoundObjectResult>(result);
         }
     }
 }

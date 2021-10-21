@@ -47,7 +47,7 @@ namespace Bookmarks.Api.Services
             {
                 url.Title = _helper.RandomString(titleLength);
 
-                while (Get(url.Title) != null)
+                while (_urlRepository.Existing(url.Title))
                 {
                     url.Title = _helper.RandomString(titleLength);
                 }
@@ -55,7 +55,7 @@ namespace Bookmarks.Api.Services
                 _logger.LogInformation("Empty field title set to random string!");
             }
 
-            if (Get(url.Title) == null)
+            if (!_urlRepository.Existing(url.Title))
             {
                 _urlRepository.Add(url);
                 _logger.LogInformation("PostToDataBase method successfully called");
@@ -66,5 +66,9 @@ namespace Bookmarks.Api.Services
             return false;
         }
 
+        public bool Existing(string name)
+        {
+            return _urlRepository.Existing(name);
+        }
     }
 }

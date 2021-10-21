@@ -32,5 +32,14 @@ namespace Bookmarks.Api.Helper
 
             return result;
         }
+
+        public bool Existing(string listName)
+        {
+            bool result = _dbcontext.UrlLists
+               .Include(list => list.Items)
+               .Where(list => list.Title == listName).Count() > 0;
+
+            return result;
+        }
     }
 }

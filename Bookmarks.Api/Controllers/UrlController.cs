@@ -36,6 +36,18 @@ namespace Bookmarks.Api.Controllers
             return NotFound("URL List with name: " + name + "  don't exist!!!");
         }
 
+        [HttpGet("existing")]
+        public IActionResult Existing([FromQuery] string name)
+        {
+            name = name.ToLower();
+
+            if (!_dataBaseServices.Existing(name))
+            {
+                return Ok();
+            }
+            return NotFound("URL List with name: " + name + " already  exist!!!");
+        }
+
         [HttpPost]
         public IActionResult PostUrlList([FromBody]UrlList url)
         {

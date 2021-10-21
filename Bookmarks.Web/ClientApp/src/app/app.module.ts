@@ -14,6 +14,7 @@ import { AssignmentComponent } from './assignment/assignment.component';
 import { NewUrlListComponent } from './new-url-list/new-list.component';
 import { ViewUrlListComponent } from './view-url-list/view-url-list.component';
 
+
 @NgModule({
   declarations: [
     AppComponent,
@@ -32,7 +33,9 @@ import { ViewUrlListComponent } from './view-url-list/view-url-list.component';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'new-url-list',component:NewUrlListComponent},
+      { path: 'edit',component:NewUrlListComponent},
+      {path: '**',component:ViewUrlListComponent}
+      //{path: '**',component:CounterComponent}
       /*{ path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'bookmarks', component: BookmarksComponent },

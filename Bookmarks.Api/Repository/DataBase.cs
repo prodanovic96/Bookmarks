@@ -1,13 +1,5 @@
 ﻿using Bookmarks.Api.Models;
 using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
-using System.Configuration;
-using System.Data;
-//using System.Data.Entity;
-using System.Data.SQLite;
-using System.Linq;
-using System.Threading.Tasks;
 
 namespace Bookmarks.Api.Repository
 {
@@ -23,7 +15,7 @@ namespace Bookmarks.Api.Repository
         protected override void OnModelCreating(ModelBuilder modelBuilder)
         {
             modelBuilder.Entity<UrlItem>().ToTable("UrlItem");
-            modelBuilder.Entity<UrlList>().ToTable("UrlList");
+            modelBuilder.Entity<UrlList>().ToTable("UrlList"); 
         }
     }
 }

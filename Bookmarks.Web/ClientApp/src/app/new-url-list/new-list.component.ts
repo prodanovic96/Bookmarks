@@ -100,6 +100,10 @@ export class NewUrlListComponent implements OnInit {
     tmp_item.link = this.newItem.link;
 
     this.isEmpty = false;
+    if(tmp_item.link.indexOf("http://") === -1 && tmp_item.link.indexOf("https://") === -1)
+    {
+      tmp_item.link = "https://" + tmp_item.link;
+    }
     if(this.isValidHttpUrl(tmp_item.link)){
       this.newList.items.push(tmp_item);
       this.newItem.link='';

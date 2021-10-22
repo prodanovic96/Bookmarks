@@ -31,10 +31,8 @@ namespace Bookmarks.Api.Helper
 
         public bool Existing(string listName)
         {
-            bool result = _dbcontext.UrlLists
-               .Include(list => list.Items)
-               .Where(list => list.Title == listName).Count() > 0;
-
+            bool result = _dbcontext.UrlLists.Any(list => list.Title == listName);
+            
             return result;
         }
     }

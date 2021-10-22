@@ -42,7 +42,7 @@ namespace Bookmarks.Api.Services
             {
                 url.Title = _helper.RandomString(titleLength);
 
-                while (!Existing(url.Title))
+                while (_urlRepository.Existing(url.Title))
                 {
                     url.Title = _helper.RandomString(titleLength);
                 }
@@ -51,8 +51,8 @@ namespace Bookmarks.Api.Services
             }
 
             url.Title = url.Title.ToLower();
-
-            if (!Existing(url.Title))
+            
+            if (!_urlRepository.Existing(url.Title))
             {
                 _urlRepository.Add(url);
                 _logger.LogInformation("PostToDataBase method successfully called");
@@ -62,7 +62,7 @@ namespace Bookmarks.Api.Services
             _logger.LogInformation("PostToDataBase method unsuccessfully called");
             return false;
         }
-    
+        
         public bool Existing(string name)
         {
             return _urlRepository.Existing(name);

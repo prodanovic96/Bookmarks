@@ -25,7 +25,7 @@ export class NewUrlListComponent implements OnInit {
     description : '',
     link : ''
   };
-
+  
   private isDisabled : boolean = true;
   private err : number;
 
@@ -34,6 +34,7 @@ export class NewUrlListComponent implements OnInit {
 
   private isValide : boolean = true;
   private isEmpty : boolean = true;
+  public isValidUrl : boolean = true;
   
   private subjectKeyUp = new Subject<any>();
 
@@ -94,23 +95,15 @@ export class NewUrlListComponent implements OnInit {
     if(this.isValide){
       this.enableButton();
     }
-    
-    this.urlValide(this.newItem.link);
 
     let tmp_item = {} as UrlItem;
     tmp_item.link = this.newItem.link;
 
     this.isEmpty = false;
-
-    this.newList.items.push(tmp_item);
-    this.newItem.link='';
-  }
-
-  urlValide(item_link : string){
-    const control: HTMLInputElement = document.createElement("input");
-    control.type = "url";
-    control.value = item_link;
-    const isValid: boolean = control.checkValidity();
+    if(this.isValidHttpUrl(tmp_item.link)){
+      this.newList.items.push(tmp_item);
+      this.newItem.link='';
+    }
   }
 
   enableButton(){
@@ -119,5 +112,33 @@ export class NewUrlListComponent implements OnInit {
 
   disableButton(){
     this.isDisabled = true;
+  }
+
+ isValidHttpUrl(string : string) {
+    this.isValidUrl = true;
+    let url;
+    var lastFour = string.substr(string.length-4);
+    if(lastFour !== ".com" && lastFour !== ".net" && lastFour !== ".edu" && lastFour !== ".org")
+    {
+      this.isValidUrl = false;
+      return false;
+    }
+
+    try {
+      url = new URL(string);
+
+      this.isValidUrl = true;
+    } catch (_) {
+      this.isValidUrl = false;
+      return false;  
+    }
+  
+    return url.protocol === "http:" || url.protocol === "https:";
+  }
+
+  deleteItem(item)
+  {
+    var index = this.newList.items.indexOf(item);
+    this.newList.items.splice(index, 1);
   }
 }

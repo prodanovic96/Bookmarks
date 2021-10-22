@@ -1,11 +1,14 @@
 <div>
     <div *ngIf="err === 404" class="alert alert-danger">List with this title don't exist!!!</div>
-    <div *ngIf = "get_list">
-        <ul *ngFor="let item of get_list.items"> 
-            <li>{{ item.link}}</li>
-            <li>{{ item.name }}</li>
-            <li>{{ item.description }}</li>
-        </ul>
-    </div>
+        <div *ngIf = "get_list">
+            <div *ngFor="let item of get_list.items"> 
+                <div class="form-row">
+                    <div class="col-md-4 mb-3">
+                        <h4>{{ item.name }}</h4>
+                        <p>{{ item.description }}</p>
+                        <p>{{ item.link }}</p> 
+                    </div>
+                </div>
+            </div>
+        </div>   
 </div>
-

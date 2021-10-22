@@ -3,7 +3,7 @@
         <div class="col-md-4 mb-3">
             <label for="title">List Title</label>
             <input type="text" class="form-control" [(ngModel)]="newList.title" (keyup)='changed($event)' id="title" placeholder="">
-            <div *ngIf="err === 404" class="alert alert-danger">List with same title already exist</div>
+            <div *ngIf="errorStatusCode === 404" class="alert alert-danger">List with same title already exist</div>
         </div>
         <div class="col-md-4 mb-3">
             <label for="description">Description</label>
@@ -14,12 +14,13 @@
         <button class="btn btn-primary" style="height:50px;width:120px" id="my_btn" [(disabled)] = "isDisabled" (click)="publish()">Publish</button>  
     </div>
     <br><br>
-    <div *ngIf="err === 400" class="alert alert-danger">Publish unsuccessfully called</div>
+    <div *ngIf="errorStatusCode === 400" class="alert alert-danger">Publish unsuccessfully called</div>
     <div class="form-row">
         <div class="col-md-4 mb-3">
             <p>Enter a link and press enter</p>
             <input type="url" class="form-control" [(ngModel)]="newItem.link" (keyup.enter)="addItem()" id="link" placeholder="http://example.com" >
             <div *ngIf = "!isValidUrl" class="alert alert-danger">Please enter valid url</div> 
+            <div *ngIf = "itemAlreadyExist" class="alert alert-danger">The same Item already exist</div> 
         </div>
     </div>
     <p>Links</p>

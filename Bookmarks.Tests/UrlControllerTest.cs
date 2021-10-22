@@ -92,14 +92,14 @@ namespace Bookmarks.Tests
         }
 
         [Fact]
-        public void Existing_WithUnexistingItem_ReturnsOk()
+        public void IsNameReserved_WithUnexistingItem_ReturnsOk()
         {
             // Arrange
             dataBaseServicesMock.Setup(serv => serv.Existing(It.IsAny<string>()))
                 .Returns(false);
 
             // Act
-            var result = _controller.Existing("test");
+            var result = _controller.IsNameReserved("test");
 
             // Assert\
             dataBaseServicesMock.Verify(serv => serv.Existing(It.IsAny<string>()));
@@ -107,7 +107,7 @@ namespace Bookmarks.Tests
         }
 
         [Fact]
-        public void Existing_WithExistingItem_ReturnsBadRequest()
+        public void IsNameReserved_WithExistingItem_ReturnsBadRequest()
         {
             string title = "test";
             string description = "";
@@ -122,7 +122,7 @@ namespace Bookmarks.Tests
                 .Returns(true);
 
             // Act
-            var result = _controller.Existing(existingItem.Title);
+            var result = _controller.IsNameReserved(existingItem.Title);
 
             // Assert
             dataBaseServicesMock.Verify(serv => serv.Existing(It.IsAny<string>()));

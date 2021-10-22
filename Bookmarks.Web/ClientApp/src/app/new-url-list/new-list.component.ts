@@ -5,6 +5,7 @@ import { UrlList } from '../model/UrlList.model';
 import { Router } from '@angular/router';
 import { Subject } from 'rxjs';
 import {debounceTime} from 'rxjs/operators';
+import { BookmarksComponent } from '../bookmarks/bookmarks.component';
 
 @Component({
   selector: 'app-new-list',
@@ -27,13 +28,14 @@ export class NewUrlListComponent implements OnInit {
   };
   
   private isDisabled : boolean = true;
-  private err : number;
+  private errorStatusCode : number;
+  private itemAlreadyExist : boolean = false;
 
   private http : HttpClient;
   private base : string;
 
-  private isValide : boolean = true;
-  private isEmpty : boolean = true;
+  private isTitleReserved : boolean = false;
+  private isListEmpty : boolean = true;
   public isValidUrl : boolean = true;
   
   private subjectKeyUp = new Subject<any>();
@@ -44,7 +46,7 @@ export class NewUrlListComponent implements OnInit {
   }
   
   publish(){
-    this.err = 0;
+    this.errorStatusCode = 0;
 
     this.http.post<UrlList>(this.base + 'Url',this.newList).subscribe(
       result => {
@@ -52,7 +54,7 @@ export class NewUrlListComponent implements OnInit {
         this.router.navigateByUrl("/" + this.newList.title);
       }, 
       error => {
-        this.err=error.status;
+        this.errorStatusCode=error.status;
         console.error(error)  
       });
   }
@@ -69,41 +71,54 @@ export class NewUrlListComponent implements OnInit {
   }
   
   existing(){
-    this.err = 0;   
+    this.errorStatusCode = 0;   
 
     if(this.newList.title != ''){
-      this.http.get<UrlList>(this.base + 'Url/existing?name=' + this.newList.title)
+      this.http.get<UrlList>(this.base + 'Url/namereserved?name=' + this.newList.title)
       .subscribe(
-        _ => {
-          if(!this.isEmpty){
-            this.enableButton();
+        result => {
+          if(!result){
+            this.isTitleReserved = false;
+            if(!this.isListEmpty){
+              this.enableButton();
+            }
+          }else{
+            this.isTitleReserved = true;
+            this.errorStatusCode = 404;
+            this.disableButton();
           }
         }, 
         error => {
-          this.err=error.status;
-          this.disableButton();
-          console.error(error)  
+          console.error(error)
         });
     } 
-    if(!this.isEmpty){
+    if(!this.isListEmpty){
       this.enableButton();
     }
   }
 
+  
   addItem(){
+    this.itemAlreadyExist = false;
 
-    if(this.isValide){
-      this.enableButton();
+    if(this.newList.items.filter(e => e.link === this.newItem.link).length > 0){
+      this.itemAlreadyExist = true;
     }
 
-    let tmp_item = {} as UrlItem;
-    tmp_item.link = this.newItem.link;
-
-    this.isEmpty = false;
-    if(this.isValidHttpUrl(tmp_item.link)){
-      this.newList.items.push(tmp_item);
-      this.newItem.link='';
-    }
+    if(!this.itemAlreadyExist){
+      if(!this.isTitleReserved){
+        this.enableButton();
+      }
+  
+      let tmp_item = {} as UrlItem;
+      tmp_item.link = this.newItem.link;
+  
+      this.isListEmpty = false;
+      if(this.isValidHttpUrl(tmp_item.link)){
+        this.newList.items.push(tmp_item);
+        this.newItem.link='';
+      }
+    } 
   }
 
   enableButton(){
@@ -142,6 +157,7 @@ export class NewUrlListComponent implements OnInit {
     this.newList.items.splice(index, 1);
 
     if(this.newList.items.length == 0){
+      this.isListEmpty = true;
       this.disableButton();
     }
   }

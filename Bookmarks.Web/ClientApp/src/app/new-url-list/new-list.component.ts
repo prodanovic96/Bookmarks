@@ -140,5 +140,9 @@ export class NewUrlListComponent implements OnInit {
   {
     var index = this.newList.items.indexOf(item);
     this.newList.items.splice(index, 1);
+
+    if(this.newList.items.length == 0){
+      this.disableButton();
+    }
   }
 }

@@ -33,8 +33,9 @@ import { ViewUrlListComponent } from './view-url-list/view-url-list.component';
     FormsModule,
     RouterModule.forRoot([
       { path: '', component: HomeComponent, pathMatch: 'full' },
-      { path: 'new-url-list',component:NewUrlListComponent},
-      {path: 'view-url-list',component:ViewUrlListComponent}
+      { path: 'edit',component:NewUrlListComponent},
+      {path: '**',component:ViewUrlListComponent}
+      //{path: '**',component:CounterComponent}
       /*{ path: 'counter', component: CounterComponent },
       { path: 'fetch-data', component: FetchDataComponent },
       { path: 'bookmarks', component: BookmarksComponent },

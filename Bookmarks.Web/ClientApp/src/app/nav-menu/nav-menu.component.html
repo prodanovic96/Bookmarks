@@ -21,10 +21,16 @@
       >
       
           <ul class="navbar-nav flex-grow">
-              <li class="nav-item"
+              <!--<li class="nav-item"
                   [routerLinkActive]="['link-active']"
                   [routerLinkActiveOptions]="{ exact: true }">
                   <a class="nav-link text-dark" [routerLink]="['/']">Home</a>
+              </li> -->
+              <li class="nav-item" [routerLinkActive]="['assignment']">
+                <a class="nav-link text-dark" [routerLink]="['/edit']">+ New</a>
+              </li>
+              <!--<li class="nav-item" [routerLinkActive]="['assignment']">
+                <a class="nav-link text-dark" [routerLink]="['/view-url-list']">View Url List</a>
               </li>
               <li class="nav-item" [routerLinkActive]="['assignment']">
                 <a class="nav-link text-dark" [routerLink]="['/new-url-list']">Add New Url List</a>

@@ -1,14 +1,5 @@
 ﻿using Bookmarks.Api.Models;
 using Microsoft.AspNetCore.Mvc;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Net.Http;
-using System.Net;
-using System.Threading.Tasks;
-using Microsoft.Extensions.Logging;
-using Bookmarks.Api.Helper;
-using Bookmarks.Api.Repository;
 using Bookmarks.Api.Services;
 
 namespace Bookmarks.Api.Controllers
@@ -24,7 +15,7 @@ namespace Bookmarks.Api.Controllers
             _dataBaseServices = dataBaseServices;
         }
  
-        [HttpGet]
+        [HttpGet("get")]
         public IActionResult GetUrlList([FromQuery]string name)
         {
             name = name.ToLower();
@@ -50,10 +41,10 @@ namespace Bookmarks.Api.Controllers
 
         [HttpPost]
         public IActionResult PostUrlList([FromBody]UrlList url)
-        {
+        {  
             if (_dataBaseServices.Add(url))
-            { 
-                return StatusCode(201);
+            {
+                return Created("",url);
             }
             else
             {

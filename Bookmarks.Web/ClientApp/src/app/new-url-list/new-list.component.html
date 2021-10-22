@@ -1,18 +1,20 @@
 <div>
-    <div>
-        <div>
+    <div class="form-row">
+        <div class="col-md-4 mb-3">
             <label for="title">List Title</label>
-            <input type="text" [(ngModel)]="newList.title"  id="title" placeholder="">
+            <input type="text" class="form-control" [(ngModel)]="newList.title" (keyup)='changed($event)' id="title" placeholder="">
+            <div *ngIf="err === 404" class="alert alert-danger">List with same title already exist</div>
         </div>
-        <div>
+        <div class="col-md-4 mb-3">
             <label for="description">Description</label>
-            <input type="text" [(ngModel)]="newList.description" id="description" placeholder="">  
-        </div>     
-        <div>
-            <button class="btn btn-primary" (click)="publish()">Publish</button>
-        </div>
-    </div>    
+            <input type="text" class="form-control" [(ngModel)]="newList.description" id="description" placeholder="">  
+        </div>  
+    </div>   
+    <div class="form-row">
+        <button class="btn btn-primary" style="height:50px;width:120px" id="my_btn" [(disabled)] = "isDisabled" (click)="publish()">Publish</button>  
+    </div>
     <br><br>
+    <div *ngIf="err === 400" class="alert alert-danger">Publish unsuccessfully called</div>
     <div class="form-row">
         <div class="col-md-4 mb-3">
             <p>Enter a link and press enter</p>
@@ -20,6 +22,7 @@
             <div *ngIf = "!isValidUrl" class="alert alert-danger">Please enter valid url</div> 
         </div>
     </div>
+    <p>Links</p>
     <div *ngIf = "newList.items">
         <div *ngFor="let item of newList.items">
             <div class="form-row">

@@ -2,8 +2,8 @@
     <div *ngIf="err === 404" class="alert alert-danger">List with this title don't exist!!!</div>
         <div *ngIf = "get_list">
             <div *ngFor="let item of get_list.items"> 
-                <div class="form-row">
-                    <div class="col-md-4 mb-3">
+                <div class="row">
+                    <div class="col-10" style="height: 50%; width: 50%; border:3px; border-style:solid; border-color:#000000; padding: 1em; background:#f1f1f1; border-radius: 20px;">
                         <h4>{{ item.name }}</h4>
                         <p>{{ item.description }}</p>
                         <a href="{{ item.link }}">{{ item.link }}</a> 

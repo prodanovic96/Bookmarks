@@ -104,21 +104,53 @@ export class NewUrlListComponent implements OnInit {
     if(this.newList.items.filter(e => e.link === this.newItem.link).length > 0){
       this.itemAlreadyExist = true;
     }
-
+    
     if(!this.itemAlreadyExist){
       if(!this.isTitleReserved){
         this.enableButton();
       }
-  
+      
       let tmp_item = {} as UrlItem;
       tmp_item.link = this.newItem.link;
+      tmp_item.description = "This is description!"
+      tmp_item.name = "";
   
       this.isListEmpty = false;
+      
+    if(tmp_item.link.indexOf("http://") === -1 && tmp_item.link.indexOf("https://") === -1)
+    {
+      tmp_item.link = "https://" + tmp_item.link;
+    }
+
+    if(tmp_item.link.indexOf("http://") !== -1)
+    {  
+      if(tmp_item.link.indexOf("www.") !== -1)
+      {
+        tmp_item.name = tmp_item.link.replace("http://www.","").slice(0,-4).toUpperCase();
+      }
+      else
+      {
+        tmp_item.name = tmp_item.link.replace("http://","").slice(0,-4).toUpperCase();
+      }
+    }
+    else if(tmp_item.link.indexOf("https://") !== -1)
+    {
+      if(tmp_item.link.indexOf("www.") !== -1)
+      {
+        tmp_item.name = tmp_item.link.replace("https://www.","").slice(0,-4).toUpperCase();
+      }
+      else
+      {
+        tmp_item.name = tmp_item.link.replace("https://","").slice(0,-4).toUpperCase();
+      }
+    }
+      
       if(this.isValidHttpUrl(tmp_item.link)){
         this.newList.items.push(tmp_item);
         this.newItem.link='';
+        this.newItem.name='';
       }
-    } 
+    }
   }
 
   enableButton(){

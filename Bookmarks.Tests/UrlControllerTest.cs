@@ -73,7 +73,7 @@ namespace Bookmarks.Tests
 
             // Assert
             dataBaseServicesMock.Verify(serv => serv.Add(It.IsAny<UrlList>()));
-            Assert.IsType<StatusCodeResult>(result);
+            Assert.IsType<CreatedResult>(result);
         }
 
         [Fact]

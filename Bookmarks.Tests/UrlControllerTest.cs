@@ -103,30 +103,7 @@ namespace Bookmarks.Tests
 
             // Assert\
             dataBaseServicesMock.Verify(serv => serv.Existing(It.IsAny<string>()));
-            Assert.IsType<OkResult>(result);
-        }
-
-        [Fact]
-        public void IsNameReserved_WithExistingItem_ReturnsBadRequest()
-        {
-            string title = "test";
-            string description = "";
-            var existingItem = new UrlList()
-            {
-                Title = title,
-                Items = new List<UrlItem>(),
-                Description = description,
-            };
-            // Arrange
-            dataBaseServicesMock.Setup(serv => serv.Existing(existingItem.Title))
-                .Returns(true);
-
-            // Act
-            var result = _controller.IsNameReserved(existingItem.Title);
-
-            // Assert
-            dataBaseServicesMock.Verify(serv => serv.Existing(It.IsAny<string>()));
-            Assert.IsType<NotFoundObjectResult>(result);
+            Assert.IsType<OkObjectResult>(result);
         }
     }
 }
